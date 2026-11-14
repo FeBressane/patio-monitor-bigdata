@@ -1,0 +1,13 @@
+# segredos e configuração local
+.env
+airflow/.env
+docker-compose.override.yml
+airflow/gtfs/
+
+# dados brutos coletados (o repositório leva só amostras/)
+chegada/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

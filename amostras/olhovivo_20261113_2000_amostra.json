@@ -1,0 +1,112 @@
+[
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "847P-10",
+  "cod_linha": 423,
+  "sentido": 1,
+  "prefixo": 11864,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:26Z",
+  "lat": -23.4861505,
+  "lon": -46.7258785
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "847P-10",
+  "cod_linha": 423,
+  "sentido": 1,
+  "prefixo": 11800,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:35Z",
+  "lat": -23.486366500000003,
+  "lon": -46.726082
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "847P-10",
+  "cod_linha": 423,
+  "sentido": 1,
+  "prefixo": 11861,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:19Z",
+  "lat": -23.486438,
+  "lon": -46.726151
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "847P-10",
+  "cod_linha": 423,
+  "sentido": 1,
+  "prefixo": 11863,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:05Z",
+  "lat": -23.485906,
+  "lon": -46.724909
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "847P-10",
+  "cod_linha": 423,
+  "sentido": 1,
+  "prefixo": 11831,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:42Z",
+  "lat": -23.4861505,
+  "lon": -46.7258785
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "1020-10",
+  "cod_linha": 35265,
+  "sentido": 2,
+  "prefixo": 15230,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:38:37Z",
+  "lat": -23.487212999999997,
+  "lon": -46.7148845
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "8010-10",
+  "cod_linha": 33566,
+  "sentido": 2,
+  "prefixo": 16310,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:25Z",
+  "lat": -23.48452,
+  "lon": -46.728609
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "8016-10",
+  "cod_linha": 34114,
+  "sentido": 2,
+  "prefixo": 15203,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:31:00Z",
+  "lat": -23.4861505,
+  "lon": -46.7258785
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "8015-10",
+  "cod_linha": 34113,
+  "sentido": 2,
+  "prefixo": 15063,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:39:39Z",
+  "lat": -23.485703,
+  "lon": -46.725952500000005
+ },
+ {
+  "hr_consulta": "20:39",
+  "letreiro": "8015-10",
+  "cod_linha": 34113,
+  "sentido": 2,
+  "prefixo": 15231,
+  "acessivel": true,
+  "data_hora": "2026-11-13T23:38:37Z",
+  "lat": -23.482231,
+  "lon": -46.7177375
+ }
+]
