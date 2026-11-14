@@ -15,6 +15,21 @@
 
 ---
 
+## 🧾 Ficha Técnica do MVP
+
+| Campo | Pátio Monitor |
+|---|---|
+| Nome do produto | Pátio Monitor |
+| Cidadão e território | O passageiro que espera na plataforma e o controlador de terminais e garagens de ônibus em São Paulo. O Terminal Pirituba é o cenário de referência. |
+| Problema | Escala, portaria e rastreamento não concordam sobre onde está cada ônibus, e o controlador decide sem saber se o veículo está fora, manobrando ou foi trocado. |
+| Proposta de valor | Uma visão única do pátio que cruza o previsto com o registrado e aponta pendências enquanto ainda dá tempo de agir. |
+| Arquitetura | Front web, API do produto, pipeline de dados (Airflow → Databricks, **este repositório**), Smart Bus Gate (ESP32), automação RPA no n8n, assistente de IA e detector de visão, publicados por CI/CD em nuvem. |
+| Fontes de dados | SPTrans Olho Vivo (posições reais), GTFS da SPTrans (viagens previstas), Open-Meteo (clima) e portaria simulada em CSV, com a regra de geração documentada. |
+| Modelos de IA | Assistente do controlador com LLM e RAG, YOLO para veículos no pátio e o modelo de Machine Learning do Smart Bus Gate. |
+| URL do MVP e repositório | https://patio-monitor-gs-97688.azurewebsites.net · https://github.com/FeBressane/patio-monitor-bigdata |
+| Indicadores de impacto | Porcentagem de partidas no horário, tempo para localizar um veículo, saídas sem confirmação por dia e tempo médio de permanência. |
+| ODS | ODS 11 (meta 11.2, transporte público acessível e eficiente) e ODS 9 (infraestrutura e inovação). |
+
 ## 📌 O produto em uma frase
 
 O **Pátio Monitor** é uma visão única do pátio de ônibus que cruza o que estava previsto (escala) com o que aconteceu de fato (portaria e GPS) e aponta as pendências enquanto ainda dá tempo de agir.
@@ -79,7 +94,7 @@ Por que simular a portaria: não temos acesso à portaria nem à escala de veíc
 | 05 · Bronze incremental | [`databricks/01_bronze.py`](databricks/01_bronze.py) | `COPY INTO` por fonte: no 2º lote só os arquivos novos entram, e rodar de novo não duplica. O notebook mostra as contagens antes e depois |
 | 06 · Prata | [`databricks/02_prata.py`](databricks/02_prata.py) | Tipos corrigidos, deduplicação e `MERGE` pela chave (`prefixo_veiculo`, `data_hora`). 3 regras com o total barrado por cada uma: **R1** coordenada fora do raio do pátio, **R2** prefixo nulo ou fora do formato de 5 dígitos, **R3** saída registrada antes da entrada |
 | 07 · Ouro + 5 consultas | [`databricks/03_ouro.py`](databricks/03_ouro.py), [`databricks/04_consultas.sql`](databricks/04_consultas.sql) | Fato `fato_permanencia` e as dimensões `dim_veiculo`, `dim_linha`, `dim_tempo` e `dim_local`. Consultas: permanência média por linha, viagens sem saída confirmada por dia, veículos parados há mais de X minutos, divergências escala × portaria por tipo e o **impacto** (% de partidas no horário antes e depois dos alertas) |
-| 08 · LGPD e MVP | `03_ouro` + API do MVP | Matrícula e nome do motorista (fictícios) chegam à Ouro só como **SHA-256**. O MVP usa a `fato_permanencia`, exportada sem nenhuma coluna de motorista, em `GET /permanencia` |
+| 08 · LGPD e MVP | `03_ouro` + API do MVP | Matrícula e nome do motorista (fictícios) chegam à Ouro só como **SHA-256**. O MVP usa a `fato_permanencia`, exportada sem nenhuma coluna de motorista: a API a serve em `GET /api/permanencia` e a tela do MVP mostra a seção "Permanência no pátio (camada Ouro)" |
 | 09 · README | este arquivo | Integrantes, arquitetura e passo a passo |
 
 ## ▶️ Como reproduzir o pipeline
