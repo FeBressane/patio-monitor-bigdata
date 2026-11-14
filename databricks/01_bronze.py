@@ -38,7 +38,14 @@ display(spark.createDataFrame(list(antes.items()), "tabela string, linhas_antes 
 
 # COMMAND ----------
 
+import fnmatch
+arquivos_no_volume = [f.name for f in dbutils.fs.ls(VOLUME)]
+
 for tabela, (padrao, formato, opcoes) in FONTES.items():
+    # Fonte sem nenhum arquivo no Volume (ex.: GTFS ainda não baixado): pula, senão o COPY INTO falha.
+    if not fnmatch.filter(arquivos_no_volume, padrao):
+        print(f"{tabela}: nenhum arquivo {padrao} no Volume, pulando")
+        continue
     spark.sql(f"CREATE TABLE IF NOT EXISTS {tabela}")
     spark.sql(f"""
         COPY INTO {tabela}
