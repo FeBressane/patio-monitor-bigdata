@@ -75,6 +75,7 @@ SELECT
   CAST(linha AS STRING) AS linha, CAST(vaga AS STRING) AS vaga,
   to_timestamp(entrada) AS entrada, to_timestamp(nullif(CAST(saida AS STRING), '')) AS saida,
   CAST(matricula_motorista AS STRING) AS matricula_motorista, CAST(nome_motorista AS STRING) AS nome_motorista,
+  arquivo_origem,
   CASE
     WHEN prefixo IS NULL OR NOT CAST(prefixo AS STRING) RLIKE '^[0-9]{5}$' THEN 'R2_prefixo_invalido'
     WHEN to_timestamp(nullif(CAST(saida AS STRING), '')) < to_timestamp(entrada) THEN 'R3_saida_antes_da_entrada'
@@ -84,8 +85,9 @@ FROM bronze_portaria
 
 spark.sql("""
 CREATE OR REPLACE TABLE prata_portaria AS
-SELECT * EXCEPT (regra_violada) FROM portaria_avaliada WHERE regra_violada IS NULL
-QUALIFY row_number() OVER (PARTITION BY registro_id ORDER BY entrada) = 1
+SELECT * EXCEPT (regra_violada, arquivo_origem) FROM portaria_avaliada WHERE regra_violada IS NULL
+-- novos lotes regeram a portaria com o mesmo registro_id: fica a versão do arquivo mais recente
+QUALIFY row_number() OVER (PARTITION BY registro_id ORDER BY arquivo_origem DESC) = 1
 """)
 
 spark.sql("""
@@ -94,7 +96,7 @@ SELECT CAST(viagem_id AS STRING) AS viagem_id, CAST(linha AS STRING) AS linha,
        CAST(prefixo_previsto AS STRING) AS prefixo_previsto, CAST(vaga_prevista AS STRING) AS vaga_prevista,
        to_timestamp(saida_prevista) AS saida_prevista
 FROM bronze_escala
-QUALIFY row_number() OVER (PARTITION BY viagem_id ORDER BY saida_prevista) = 1
+QUALIFY row_number() OVER (PARTITION BY viagem_id ORDER BY arquivo_origem DESC) = 1
 """)
 
 # COMMAND ----------

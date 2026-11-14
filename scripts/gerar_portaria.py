@@ -17,6 +17,9 @@ REGRA DE GERAÇÃO (vai no relatório):
       2%  saída digitada antes da entrada        -> barrada pela regra 3 da Prata
  6. Escala: saida_prevista = saida_real - atraso, atraso ~ Normal(2, 4) min.
  7. Motorista: matrícula e nome FICTÍCIOS (listas abaixo). A Ouro aplica SHA-256 neles.
+ 8. Reprocessável: o ID e os sorteios de cada estadia dependem só dela (prefixo + 1ª observação),
+    então rodar de novo com mais dias gera as MESMAS linhas para as estadias antigas e só acrescenta
+    as novas. Assim dá para coletar mais dias depois e subir novos lotes nas mesmas tabelas.
 
 Uso:  python gerar_portaria.py <pasta com olhovivo_*.json> <pasta de saída>
 """
@@ -64,11 +67,12 @@ def agrupar_estadias(obs):
 
 
 def gerar(pasta_in: Path, pasta_out: Path):
-    rnd = random.Random(SEMENTE)
     estadias = agrupar_estadias(ler_observacoes(pasta_in))
     prefixos = sorted({e["prefixo"] for e in estadias}) or ["00000"]
     portaria, escala = [], []
-    for i, e in enumerate(estadias):
+    for e in estadias:
+        chave = f"{e['prefixo']}-{e['primeira']:%Y%m%d%H%M}"
+        rnd = random.Random(f"{SEMENTE}-{chave}")  # sorteios estáveis por estadia
         entrada = e["primeira"] - timedelta(minutes=rnd.uniform(5, 40))
         saida = e["ultima"] + timedelta(minutes=rnd.uniform(3, 30))
         vaga = f"V{rnd.randint(1, 12)}"
@@ -78,14 +82,14 @@ def gerar(pasta_in: Path, pasta_out: Path):
             saida_reg = entrada - timedelta(minutes=rnd.uniform(1, 20))
         matricula = f"{rnd.randint(100000, 999999)}"
         portaria.append({
-            "registro_id": f"R{i:06d}", "prefixo": e["prefixo"], "linha": e["linha"], "vaga": vaga,
+            "registro_id": f"R-{chave}", "prefixo": e["prefixo"], "linha": e["linha"], "vaga": vaga,
             "entrada": entrada.isoformat(), "saida": saida_reg.isoformat() if saida_reg else "",
             "matricula_motorista": matricula, "nome_motorista": rnd.choice(NOMES_FICTICIOS), "simulado": "true",
         })
         troca = rnd.random() < 0.05
         vaga_errada = rnd.random() < 0.05
         escala.append({
-            "viagem_id": f"{e['linha']}-{saida:%Y%m%d%H%M}-{i}", "linha": e["linha"],
+            "viagem_id": f"{e['linha']}-{chave}", "linha": e["linha"],
             "prefixo_previsto": rnd.choice([p for p in prefixos if p != e["prefixo"]] or prefixos) if troca else e["prefixo"],
             "vaga_prevista": f"V{rnd.randint(1, 12)}" if vaga_errada else vaga,
             "saida_prevista": (saida - timedelta(minutes=rnd.gauss(2, 4))).isoformat(), "simulado": "true",
