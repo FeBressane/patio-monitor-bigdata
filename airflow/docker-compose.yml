@@ -1,36 +1,44 @@
-# Airflow local para o DAG patio_coleta (modo standalone: 1 container).
+# Airflow 3 local para o DAG patio_coleta (modo standalone: 1 container com api-server, scheduler,
+# dag-processor e triggerer).
 #   cd airflow
-#   cp .env.example .env        # coloque o token da SPTrans (o .env fica fora do Git)
-#   docker compose up -d        # interface em http://localhost:8081
-#   docker compose exec airflow airflow users create -u admin -p <senha> -r Admin -f Admin -l Patio -e admin@example.com
+#   cp .env.example .env        # coloque o token da SPTrans e a senha do admin (o .env fica fora do Git)
+#   docker compose up -d        # interface em http://localhost:8081  (usuário: admin)
 #
 # As Variables do DAG vêm de variáveis de ambiente AIRFLOW_VAR_* (lidas do .env),
 # então o token nunca passa pelo código, pelo banco do Airflow nem pelo repositório.
+x-airflow-image: &imagem apache/airflow:3.3.2-python3.12
+
 services:
-  # O volume nasce com dono root; o Airflow roda como uid 50000 e precisa gravar o banco nele.
-  permissoes:
-    image: apache/airflow:2.10.5-python3.12
+  # Prepara o volume: dono = usuário do Airflow (uid 50000) e arquivo de senha do admin a partir do .env.
+  preparar:
+    image: *imagem
     user: "0:0"
-    entrypoint: ["chown", "-R", "50000:0", "/opt/airflow/estado"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'printf "{\"admin\": \"%s\"}" "$$AIRFLOW_ADMIN_SENHA" > /opt/airflow/estado/senhas.json && chown -R 50000:0 /opt/airflow/estado && chmod 600 /opt/airflow/estado/senhas.json'
+    environment:
+      AIRFLOW_ADMIN_SENHA: ${AIRFLOW_ADMIN_SENHA:?defina AIRFLOW_ADMIN_SENHA no .env}
     volumes:
-      - airflow-estado:/opt/airflow/estado
+      - airflow3-estado:/opt/airflow/estado
 
   airflow:
-    image: apache/airflow:2.10.5-python3.12
+    image: *imagem
     command: standalone
-    depends_on:
-      permissoes:
-        condition: service_completed_successfully
     restart: unless-stopped
+    depends_on:
+      preparar:
+        condition: service_completed_successfully
     ports:
-      - "127.0.0.1:8081:8080"   # só nesta máquina (8080 já é do front no compose da raiz)
+      - "127.0.0.1:8081:8080"   # só nesta máquina (8080 costuma estar em uso pelo front do MVP)
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Sao_Paulo
-      AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: America/Sao_Paulo
-      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: "30"
+      AIRFLOW__DAG_PROCESSOR__REFRESH_INTERVAL: "30"
       # Banco do Airflow num volume: o histórico de execuções (visão Grid do relatório) sobrevive a restart.
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/estado/airflow.db
+      # Login: usuário admin com papel admin; a senha vem do .env (arquivo gerado pelo serviço preparar).
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: admin:admin
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_PASSWORDS_FILE: /opt/airflow/estado/senhas.json
       AIRFLOW_VAR_SPTRANS_TOKEN: ${SPTRANS_TOKEN:?defina SPTRANS_TOKEN no .env}
       AIRFLOW_VAR_GTFS_ZIP_URL: /opt/airflow/gtfs/gtfs.zip
       AIRFLOW_VAR_PATIO_CHEGADA_DIR: /opt/airflow/chegada
@@ -38,7 +46,7 @@ services:
       - ../dags:/opt/airflow/dags:ro
       - ../chegada:/opt/airflow/chegada        # chegada/ na raiz do repositório (fora do Git)
       - ./gtfs:/opt/airflow/gtfs:ro            # coloque aqui o gtfs.zip baixado do portal da SPTrans
-      - airflow-estado:/opt/airflow/estado
+      - airflow3-estado:/opt/airflow/estado
 
 volumes:
-  airflow-estado:
+  airflow3-estado:

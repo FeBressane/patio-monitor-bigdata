@@ -101,13 +101,12 @@ Por que simular a portaria: não temos acesso à portaria nem à escala de veíc
 
 **1. Coleta (Airflow)**
 
-Pré-requisitos: Docker Desktop e um token gratuito da SPTrans (https://www.sptrans.com.br/desenvolvedores/, área "Meus aplicativos").
+Ferramenta: **Apache Airflow 3** (3.3.2, modo standalone). Pré-requisitos: Docker Desktop e um token gratuito da SPTrans (https://www.sptrans.com.br/desenvolvedores/, área "Meus aplicativos").
 
 ```bash
 cd airflow
-cp .env.example .env            # coloque o SPTRANS_TOKEN (o .env fica fora do Git)
-docker compose up -d            # Airflow em http://localhost:8081
-docker compose exec airflow airflow users create -u admin -p <senha> -r Admin -f Admin -l Patio -e admin@example.com
+cp .env.example .env            # coloque o SPTRANS_TOKEN e a AIRFLOW_ADMIN_SENHA (o .env fica fora do Git)
+docker compose up -d            # Airflow 3 em http://localhost:8081 (usuário admin)
 ```
 
 Baixe o GTFS no portal da SPTrans e salve como `airflow/gtfs/gtfs.zip`. Sem ele, a tarefa de GTFS é pulada com aviso e a coleta de posições continua.

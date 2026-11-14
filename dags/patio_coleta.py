@@ -23,9 +23,8 @@ from pathlib import Path
 
 import pendulum
 import requests
-from airflow.decorators import dag, task
 from airflow.exceptions import AirflowSkipException
-from airflow.models import Variable
+from airflow.sdk import Variable, dag, task  # Airflow 3: Task SDK
 
 TZ = pendulum.timezone("America/Sao_Paulo")
 CENTRO = (-23.4889, -46.7262)  # Terminal Pirituba (aproximado, conferir)
@@ -34,7 +33,7 @@ OLHO_VIVO = "https://api.olhovivo.sptrans.com.br/v2.1"
 
 
 def _dir() -> Path:
-    d = Path(Variable.get("patio_chegada_dir", default_var="/opt/airflow/chegada"))
+    d = Path(Variable.get("patio_chegada_dir", default="/opt/airflow/chegada"))
     d.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -62,7 +61,7 @@ def notificar_falha(context) -> None:
     msg = (f"[Pátio Monitor] Falha na coleta: DAG {ti.dag_id}, tarefa {ti.task_id}, "
            f"execução {context['run_id']}, tentativa {ti.try_number}. Erro: {context.get('exception')}")
     print(msg)
-    url = Variable.get("alerta_webhook_url", default_var="")
+    url = Variable.get("alerta_webhook_url", default="")
     if url:
         try:
             requests.post(url, json={"content": msg, "text": msg}, timeout=10)
