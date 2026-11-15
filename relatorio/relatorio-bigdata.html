@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Pipeline de Dados do Pátio Monitor</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root { --tinta:#1b1f24; --suave:#57606a; --linha:#d0d7de; --fundo:#f6f8fa; --acento:#0b5cad; --ok:#1a7f37; --erro:#cf222e; --bronze:#a0662b; --prata:#6e7781; --ouro:#b08800; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: var(--tinta); font-size: 10.5pt; line-height: 1.45; margin: 0; background:#fff; }
+  a { color: var(--acento); }
+  h2 { font-size: 13.5pt; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--acento); break-after: avoid; }
+  h3 { font-size: 11pt; margin: 14px 0 6px; break-after: avoid; }
+  p { margin: 6px 0; }
+  ul, ol { margin: 6px 0 6px 18px; padding: 0; }
+  li { margin: 2px 0; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: var(--fundo); padding: 1px 4px; border-radius: 3px; }
+  pre { font-family: Consolas, monospace; font-size: 8.5pt; background: var(--fundo); border: 1px solid var(--linha); padding: 7px 9px; border-radius: 4px; white-space: pre-wrap; margin: 6px 0; break-inside: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 9.5pt; break-inside: avoid; }
+  th, td { border: 1px solid var(--linha); padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: var(--fundo); }
+  .num { text-align: right; white-space: nowrap; }
+  .capa { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; break-after: page; }
+  .capa .topo { color: var(--suave); font-size: 11pt; }
+  .capa .produto { font-size: 34pt; font-weight: 700; letter-spacing: 1px; margin-top: 40mm; }
+  .capa .slogan { font-size: 13pt; color: var(--suave); margin-top: 4px; }
+  .capa .entrega { margin-top: 18mm; font-size: 12pt; }
+  .capa .entrega b { font-size: 15pt; }
+  .capa .integrantes { font-size: 11pt; line-height: 1.7; }
+  .capa .links { font-size: 10pt; }
+  .print { border: 2px dashed var(--suave); background: var(--fundo); color: var(--suave); padding: 22px 12px; text-align: center; margin: 8px 0; font-size: 9.5pt; break-inside: avoid; }
+  figure { margin: 8px 0; break-inside: avoid; }
+  figure img { width: 100%; border: 1px solid var(--linha); }
+  .legenda, figcaption { font-size: 9pt; color: var(--suave); text-align: center; margin-top: 2px; }
+  .caixa { background: var(--fundo); border-left: 4px solid var(--acento); padding: 8px 10px; margin: 8px 0; break-inside: avoid; }
+  .req { break-inside: avoid; margin-top: 12px; }
+  .req h3 { margin-top: 0; }
+  .tag { display: inline-block; font-size: 8.5pt; font-weight: 600; padding: 0 6px; border-radius: 8px; background: #eaf2fb; color: var(--acento); margin-left: 4px; }
+  .pend { color: var(--suave); font-style: italic; }
+  svg text { font-family: "Segoe UI", Arial, sans-serif; }
+  .quebra { break-before: page; }
+</style>
+</head>
+<body>
+
+<!-- ===================== CAPA ===================== -->
+<section class="capa">
+  <div class="topo">FIAP · Engenharia de Software · 4º ano<br>Global Solution 2026.2 · Desafio CitizenTech</div>
+  <div>
+    <div class="produto">PÁTIO MONITOR</div>
+    <div class="slogan">Visão única do pátio para terminais e garagens de ônibus</div>
+    <div class="entrega">Big Data Architecture &amp; Data Integration<br><b>Pipeline de Dados do Pátio Monitor</b><br>
+      Professores: Rogério, Thiago, Thiago e Milton<br>Turma: 4ESPV</div>
+  </div>
+  <div class="integrantes"><b>Integrantes</b><br>
+    Camila do Prado Padalino · RM 98316<br>Felipe Cavalcante Bressane · RM 97688<br>Gabriel Teixeira Machado · RM 551570</div>
+  <div class="links">
+    Repositório: <a href="https://github.com/FeBressane/patio-monitor-bigdata">github.com/FeBressane/patio-monitor-bigdata</a><br>
+    MVP: <a href="https://patio-monitor-gs-97688.azurewebsites.net">patio-monitor-gs-97688.azurewebsites.net</a><br><br>
+    São Paulo, novembro de 2026</div>
+</section>
+
+<!-- ===================== 01 ===================== -->
+<h2>01. Integrantes</h2>
+<table>
+  <tr><th>Nome completo</th><th style="width:22%">RM</th></tr>
+  <tr><td>Camila do Prado Padalino</td><td>98316</td></tr>
+  <tr><td>Felipe Cavalcante Bressane</td><td>97688</td></tr>
+  <tr><td>Gabriel Teixeira Machado</td><td>551570</td></tr>
+</table>
+
+<h3>Ficha Técnica do MVP</h3>
+<table>
+  <tr><th style="width:28%">Campo</th><th>Pátio Monitor</th></tr>
+  <tr><td>Nome do produto</td><td>Pátio Monitor</td></tr>
+  <tr><td>Cidadão e território</td><td>O passageiro que espera na plataforma e o controlador de terminais e garagens de ônibus em São Paulo. O Terminal Pirituba é o cenário de referência.</td></tr>
+  <tr><td>Problema</td><td>Escala, portaria e rastreamento não concordam sobre onde está cada ônibus, e o controlador decide sem saber se o veículo está fora, manobrando ou foi trocado.</td></tr>
+  <tr><td>Proposta de valor</td><td>Uma visão única do pátio que cruza o previsto com o registrado e aponta pendências enquanto ainda dá tempo de agir.</td></tr>
+  <tr><td>Arquitetura</td><td>Front web, API do produto, pipeline de dados (Airflow → Databricks, objeto deste relatório), Smart Bus Gate (ESP32), automação RPA no n8n, assistente de IA e detector de visão, publicados por CI/CD no Azure.</td></tr>
+  <tr><td>Fontes de dados</td><td>SPTrans Olho Vivo (posições reais), GTFS da SPTrans (viagens previstas), Open-Meteo (clima) e portaria simulada em CSV, com a regra de geração documentada.</td></tr>
+  <tr><td>Modelos de IA</td><td>Assistente do controlador com LLM e RAG, YOLO para veículos no pátio e o modelo de Machine Learning do Smart Bus Gate.</td></tr>
+  <tr><td>URL do MVP e repositório</td><td><a href="https://patio-monitor-gs-97688.azurewebsites.net">patio-monitor-gs-97688.azurewebsites.net</a> · <a href="https://github.com/FeBressane/patio-monitor-bigdata">github.com/FeBressane/patio-monitor-bigdata</a></td></tr>
+  <tr><td>Indicadores de impacto</td><td>Porcentagem de partidas no horário, tempo para localizar um veículo, saídas sem confirmação por dia e tempo médio de permanência.</td></tr>
+  <tr><td>ODS</td><td>ODS 11 (meta 11.2, transporte público acessível e eficiente) e ODS 9 (infraestrutura e inovação).</td></tr>
+</table>
+
+<!-- ===================== 02 ===================== -->
+<h2>02. O produto em uma frase e as perguntas do MVP</h2>
+<div class="caixa">O <b>Pátio Monitor</b> é uma visão única do pátio de ônibus que cruza o que estava previsto (escala) com o que aconteceu de fato (portaria e GPS) e aponta as pendências enquanto ainda dá tempo de agir.</div>
+<p>O componente <b>Dados</b> coleta as posições reais dos ônibus em volta do <b>Terminal Pirituba</b>, trata tudo em camadas Bronze → Prata → Ouro no Databricks e entrega ao produto a tabela de permanência que o controlador vê. Ele responde a quatro perguntas:</p>
+<ol>
+  <li>Quais veículos estão no pátio agora, e há quanto tempo?</li>
+  <li>Quais viagens previstas não têm saída confirmada?</li>
+  <li>Onde a escala, a portaria e o GPS discordam?</li>
+  <li>A porcentagem de partidas no horário melhorou depois dos alertas? <span class="tag">impacto</span></li>
+</ol>
+
+<!-- ===================== 03 ===================== -->
+<h2>03. Fluxo de dados, da fonte ao MVP</h2>
+<svg viewBox="0 0 720 300" width="100%" role="img" aria-label="Fluxo de dados do Pátio Monitor">
+  <defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker></defs>
+  <style>.b{fill:#fff;stroke:#57606a;stroke-width:1.2}.af{fill:#eaf2fb;stroke:#0b5cad;stroke-width:1.4}.db{fill:#fdf6ec;stroke:#a0662b;stroke-width:1.2;stroke-dasharray:4 3}.t{font-size:11px;fill:#1b1f24}.p{font-size:9.5px;fill:#57606a}.l{stroke:#57606a;stroke-width:1.2;fill:none;marker-end:url(#s)}.tt{font-size:11px;font-weight:600;fill:#1b1f24}</style>
+  <!-- fontes -->
+  <text class="tt" x="10" y="16">Fontes</text>
+  <rect class="b" x="10" y="24" width="140" height="38" rx="6"/><text class="t" x="18" y="40">SPTrans Olho Vivo</text><text class="p" x="18" y="54">API · posições · horária</text>
+  <rect class="b" x="10" y="70" width="140" height="38" rx="6"/><text class="t" x="18" y="86">GTFS SPTrans</text><text class="p" x="18" y="100">dados abertos · diária</text>
+  <rect class="b" x="10" y="116" width="140" height="38" rx="6"/><text class="t" x="18" y="132">Open-Meteo</text><text class="p" x="18" y="146">API sem chave · diária</text>
+  <!-- airflow -->
+  <rect class="af" x="185" y="24" width="150" height="130" rx="8"/>
+  <text class="tt" x="195" y="42" style="fill:#0b5cad">Airflow 3 (Docker)</text>
+  <text class="p" x="195" y="60">DAG patio_coleta · @hourly</text>
+  <text class="p" x="195" y="76">3 coletas em paralelo</text>
+  <text class="p" x="195" y="92">→ conferir_chegada</text>
+  <text class="p" x="195" y="108">token em Variable</text>
+  <text class="p" x="195" y="124">on_failure_callback</text>
+  <path class="l" d="M150,43 L185,60"/><path class="l" d="M150,89 L185,89"/><path class="l" d="M150,135 L185,118"/>
+  <!-- chegada -->
+  <rect class="b" x="370" y="50" width="130" height="50" rx="6"/><text class="t" x="380" y="70">chegada/</text><text class="p" x="380" y="86">1 arquivo por coleta</text>
+  <path class="l" d="M335,80 L370,77"/>
+  <rect class="b" x="370" y="118" width="130" height="40" rx="6"/><text class="t" x="380" y="134">gerar_portaria.py</text><text class="p" x="380" y="148">portaria e escala simuladas</text>
+  <path class="l" d="M420,100 L420,118"/><path class="l" d="M450,118 L450,100"/>
+  <!-- databricks -->
+  <rect class="db" x="10" y="180" width="580" height="110" rx="8"/>
+  <text class="tt" x="20" y="198" style="fill:#a0662b">Databricks Free Edition · workspace.patio</text>
+  <rect class="b" x="20" y="210" width="110" height="64" rx="6"/><text class="t" x="28" y="228">Volume</text><text class="p" x="28" y="244">upload manual</text><text class="p" x="28" y="258">em lotes</text>
+  <rect class="b" x="155" y="210" width="120" height="64" rx="6" style="stroke:#a0662b"/><text class="t" x="163" y="228">Bronze</text><text class="p" x="163" y="244">COPY INTO</text><text class="p" x="163" y="258">idempotente</text>
+  <rect class="b" x="300" y="210" width="130" height="64" rx="6" style="stroke:#6e7781"/><text class="t" x="308" y="228">Prata</text><text class="p" x="308" y="244">tipos · R1 R2 R3</text><text class="p" x="308" y="258">MERGE pela chave</text>
+  <rect class="b" x="455" y="210" width="125" height="64" rx="6" style="stroke:#b08800"/><text class="t" x="463" y="228">Ouro</text><text class="p" x="463" y="244">fato + 4 dimensões</text><text class="p" x="463" y="258">SHA-256 (LGPD)</text>
+  <path class="l" d="M370,92 L352,92 L352,168 L75,168 L75,210"/>
+  <text class="p" x="160" y="163">upload manual em lotes</text>
+  <path class="l" d="M130,242 L155,242"/><path class="l" d="M275,242 L300,242"/><path class="l" d="M430,242 L455,242"/>
+  <!-- mvp -->
+  <rect class="af" x="610" y="200" width="105" height="94" rx="8"/>
+  <text class="tt" x="618" y="218" style="fill:#0b5cad">MVP (Azure)</text>
+  <text class="p" x="618" y="236">GET /api/permanencia</text>
+  <text class="p" x="618" y="252">tela "Permanência</text>
+  <text class="p" x="618" y="266">no pátio"</text>
+  <path class="l" d="M580,242 L610,242"/>
+  <text class="p" x="618" y="284">(export CSV)</text>
+</svg>
+<p class="legenda">Figura 1. O Databricks Free Edition não se conecta ao Airflow, então os arquivos de <code>chegada/</code> sobem ao Volume pela interface, em lotes de dias diferentes.</p>
+
+<!-- ===================== 04 ===================== -->
+<h2>04. Fontes de dados</h2>
+<table>
+  <tr><th style="width:18%">Fonte</th><th>Origem</th><th style="width:10%">Formato</th><th style="width:14%">Frequência</th></tr>
+  <tr><td>Posições dos ônibus</td><td>API <b>SPTrans Olho Vivo</b> (<code>/Posicao</code>, token gratuito), filtrada num raio de 1,5 km do Terminal Pirituba</td><td>JSON</td><td>De hora em hora</td></tr>
+  <tr><td>Viagens previstas</td><td><b>GTFS da SPTrans</b> (<code>trips</code>, <code>stop_times</code>, <code>routes</code>), base aberta baixada no portal de desenvolvedores</td><td>CSV</td><td>Diária</td></tr>
+  <tr><td>Clima</td><td>API <b>Open-Meteo</b> (chuva e temperatura por hora, sem chave), usada para cruzar chuva com atraso</td><td>JSON</td><td>Diária</td></tr>
+  <tr><td>Portaria e escala</td><td><b>Simuladas</b> a partir das posições reais, com regra e semente fixas (<code>scripts/gerar_portaria.py</code>)</td><td>CSV</td><td>Diária</td></tr>
+</table>
+<p>Por que simular a portaria: não temos acesso à portaria nem à escala de uma garagem real, e o GTFS diz quais viagens existem, mas não qual ônibus faz cada uma. O gerador parte dos ônibus que o GPS viu perto do pátio e aplica ruído documentado: 8% sem saída, 5% de veículo trocado, 5% de vaga errada, 2% de saída antes da entrada e motoristas fictícios.</p>
+
+<!-- ===================== 05 ===================== -->
+<h2 class="quebra">05. Requisitos 01 a 09</h2>
+
+<div class="req">
+<h3>Requisito 01 · Fontes <span class="tag">0,5</span></h3>
+<p>Três fontes reais (duas APIs públicas, Olho Vivo e Open-Meteo, e uma base aberta, o GTFS) e uma simulada com regra documentada. Todas são do problema: o Olho Vivo diz onde o ônibus está, o GTFS diz o que estava previsto e a portaria diz o que foi registrado.</p>
+<p>Os arquivos das quatro fontes no Volume aparecem na Figura 3 (requisito 04).</p>
+</div>
+
+<div class="req">
+<h3>Requisito 02 · DAG agendado <span class="tag">1,0</span></h3>
+<p>O DAG <code>patio_coleta</code> (<code>dags/patio_coleta.py</code>) roda <code>@hourly</code> com <code>catchup=False</code>, porque a Olho Vivo só devolve a posição atual e não tem histórico. Cada coleta grava um arquivo em <code>chegada/</code> com data e hora no nome, como <code>olhovivo_20261113_2000.json</code>. GTFS e clima são fontes diárias: a tarefa confere se o arquivo do dia já existe e, se existir, é pulada.</p>
+<figure>
+  <img src="../evidencias/02_airflow_visao_geral_e_grid.jpg" alt="Airflow: visão geral e grade do DAG patio_coleta">
+  <figcaption>Figura 2. DAG <code>patio_coleta</code>: agendamento <code>0 * * * *</code> (de hora em hora), nenhuma tarefa ou execução falhada nas últimas 24 h e, à esquerda, a grade (Grid) com as execuções concluídas.</figcaption>
+</figure>
+</div>
+
+<div class="req">
+<h3>Requisito 03 · Paralelismo, verificação e chaves <span class="tag">0,5</span></h3>
+<pre>[coletar_olho_vivo(), coletar_gtfs(), coletar_clima()] &gt;&gt; conferir_chegada()</pre>
+<p>As três coletas rodam em paralelo, e <code>conferir_chegada</code> confere que o arquivo da Olho Vivo daquela coleta chegou e não está vazio, lista os demais arquivos do horário e falha se algo faltar. O token da SPTrans fica na Variable <code>sptrans_token</code>, que chega ao contêiner pelo <code>.env</code> (fora do Git), e aparece como <code>***</code> nos logs. Toda tarefa tem 2 novas tentativas e um <code>on_failure_callback</code>, que registra a falha no log e, se a Variable <code>alerta_webhook_url</code> existir, envia a notificação a um webhook.</p>
+<p>As Variables entram no Airflow como variáveis de ambiente <code>AIRFLOW_VAR_*</code>, que o Airflow lê sem gravar no banco. Por isso não aparecem em Admin › Variables, e o valor nunca fica visível na interface:</p>
+<pre># airflow/docker-compose.yml (o valor vem do .env, que fica fora do Git)
+AIRFLOW_VAR_SPTRANS_TOKEN: ${SPTRANS_TOKEN:?defina SPTRANS_TOKEN no .env}
+AIRFLOW_VAR_GTFS_ZIP_URL: /opt/airflow/gtfs/gtfs.zip
+
+# dags/patio_coleta.py
+s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_token")}, timeout=20)</pre>
+</div>
+
+<div class="req">
+<h3>Requisito 04 · Dois lotes no Volume <span class="tag">0,5</span></h3>
+<p>Os arquivos subiram pela interface para <code>/Volumes/workspace/patio/chegada</code> em dois lotes de dias de coleta diferentes:</p>
+<table>
+  <tr><th>Lote</th><th>Dia de coleta</th><th>Arquivos</th></tr>
+  <tr><td>1</td><td>13/11/2026</td><td>5 × <code>olhovivo_20261113_*</code>, <code>clima_20261113_2000</code>, portaria e escala geradas com o dia 13</td></tr>
+  <tr><td>2</td><td>14 e 15/11/2026</td><td>23 × <code>olhovivo_20261114_*</code> e <code>olhovivo_20261115_*</code>, <code>clima_20261114_0000</code> e <code>clima_20261115_1600</code>, <code>gtfs_trips</code>, <code>gtfs_stop_times</code> e <code>gtfs_routes</code> de 15/11 e portaria e escala regeradas com todos os dias (30 arquivos)</td></tr>
+</table>
+<figure>
+  <img src="../evidencias/04_volume_dois_lotes.jpg" alt="Volume chegada com os arquivos dos dois lotes">
+  <figcaption>Figura 3. Volume <code>/Volumes/workspace/patio/chegada</code>: arquivos do lote 1 ("23 hours ago") e do lote 2 ("18 minutes ago"), com as quatro fontes (clima, escala, GTFS, Olho Vivo e portaria).</figcaption>
+</figure>
+</div>
+
+<div class="req">
+<h3>Requisito 05 · Bronze incremental <span class="tag">1,5</span></h3>
+<p><code>databricks/01_bronze.py</code> usa um <code>COPY INTO</code> por fonte, com <code>PATTERN</code> e as colunas <code>arquivo_origem</code> e <code>ingerido_em</code>. O <code>COPY INTO</code> guarda quais arquivos já carregou: no 2º lote só os novos entram, e rodar de novo não duplica. Fonte sem arquivo no Volume é pulada com aviso. As contagens antes e depois estão na seção 07.</p>
+</div>
+
+<div class="req">
+<h3>Requisito 06 · Prata <span class="tag">2,0</span></h3>
+<p><code>databricks/02_prata.py</code> converte os tipos (<code>to_timestamp</code>, <code>CAST</code> de lat/lon para DOUBLE), trata nulos e aplica três regras de qualidade, contando o total barrado por cada uma:</p>
+<table>
+  <tr><th style="width:12%">Regra</th><th>O que barra</th><th style="width:16%">Tabela</th><th style="width:14%" class="num">Barradas</th></tr>
+  <tr><td>R1</td><td>Coordenada nula ou fora do raio de 250 m do pátio (distância haversine)</td><td>posições</td><td class="num">1.136</td></tr>
+  <tr><td>R2</td><td>Prefixo nulo ou fora do formato de 5 dígitos</td><td>posições e portaria</td><td class="num">0</td></tr>
+  <tr><td>R3</td><td>Saída registrada antes da entrada</td><td>portaria</td><td class="num">4</td></tr>
+</table>
+<p><b>Leitura:</b> a R1 barra a maior parte das posições porque a coleta usa um raio de 1,5 km, para pegar os ônibus que se aproximam, e a Prata só guarda o que está dentro do pátio (250 m). Das 1.310 posições da Bronze, 174 passaram nas regras, e o <code>MERGE</code> deixou 167, porque 7 eram a mesma chave repetida entre coletas. A R3 barrou os 4 registros de portaria com a saída digitada antes da entrada, o erro de 2% que o gerador injeta de propósito. A R2 não barrou nada nesses lotes, porque a Olho Vivo sempre manda o prefixo com 5 dígitos. Ela continua no pipeline como proteção para quando a portaria vier de uma fonte digitada à mão.</p>
+<p>As posições válidas entram na <code>prata_posicoes</code> por <code>MERGE</code> pela chave (<code>prefixo_veiculo</code>, <code>data_hora</code>), depois de deduplicar com <code>row_number()</code>. A portaria e a escala ficam com a versão do arquivo mais recente de cada <code>registro_id</code> e <code>viagem_id</code>.</p>
+<figure>
+  <img src="../evidencias/06_prata_regras.jpg" alt="Linhas barradas por regra na Prata">
+  <figcaption>Figura 4. <code>02_prata</code>: linhas barradas por regra (R3 = 4, R1 = 1.136; a R2 não aparece porque barrou 0) e as 167 linhas da <code>prata_posicoes</code>.</figcaption>
+</figure>
+</div>
+
+<div class="req">
+<h3>Requisito 07 · Ouro e cinco consultas <span class="tag">2,5</span></h3>
+<p><code>databricks/03_ouro.py</code> monta um modelo estrela: a fato <code>fato_permanencia</code> (uma linha por viagem prevista, ligada à estadia registrada na portaria) e as dimensões <code>dim_veiculo</code>, <code>dim_linha</code>, <code>dim_tempo</code> e <code>dim_local</code>. Cada viagem recebe um <code>status_conciliacao</code>: <code>ok</code>, <code>atrasada</code> (mais de 5 min), <code>parado_vaga_errada</code>, <code>veiculo_trocado</code> ou <code>saida_sem_confirmacao</code>. As cinco consultas estão na seção 08.</p>
+<p>Com os dois lotes, a fato tem <b>157 viagens</b>: 81 ok, 32 atrasadas, 25 com veículo trocado, 12 com saída sem confirmação e 7 paradas na vaga errada.</p>
+<figure>
+  <img src="../evidencias/07_ouro_status.jpg" alt="Status de conciliação na fato_permanencia">
+  <figcaption>Figura 5. <code>03_ouro</code>: viagens por status de conciliação e o início do export para o MVP.</figcaption>
+</figure>
+</div>
+
+<div class="req">
+<h3>Requisito 08 · LGPD e uso pelo MVP <span class="tag">1,0</span></h3>
+<p>Os únicos dados pessoais do domínio são a matrícula e o nome do motorista, que já são fictícios. Mesmo assim, eles chegam à Ouro só como hash: <code>sha2(matricula_motorista, 256)</code> e <code>sha2(nome_motorista, 256)</code>. O texto original não sai da Prata.</p>
+<p>O MVP usa a tabela <b><code>fato_permanencia</code></b>, exportada <b>sem nenhuma coluna de motorista</b> para <code>data/ouro/fato_permanencia.csv</code> no repositório do MVP. A API a serve em <a href="https://patio-monitor-gs-97688.azurewebsites.net/api/permanencia"><code>GET /api/permanencia</code></a>, e a tela do MVP mostra a seção <b>"Permanência no pátio (camada Ouro)"</b>.</p>
+<div class="print">[PRINT: tela do MVP, seção "Permanência no pátio (camada Ouro)", com os dados exportados]</div>
+<figure>
+  <img src="../evidencias/07_ouro_catalogo_lgpd.jpg" alt="Colunas de motorista na fato_permanencia">
+  <figcaption>Figura 6. Catalog: à esquerda, a fato e as dimensões (<code>dim_linha</code>, <code>dim_local</code>, <code>dim_tempo</code>, <code>dim_veiculo</code>). Ao filtrar por "motorista", a <code>fato_permanencia</code> só tem as duas colunas em hash, sem nome nem matrícula em texto.</figcaption>
+</figure>
+</div>
+
+<div class="req">
+<h3>Requisito 09 · README e organização <span class="tag">0,5</span></h3>
+<p>O <a href="https://github.com/FeBressane/patio-monitor-bigdata#readme">README</a> traz os integrantes, a ficha técnica, o diagrama, as fontes, a tabela de requisitos e o passo a passo para reproduzir. As pastas são <code>dags/</code>, <code>databricks/</code>, <code>amostras/</code>, <code>scripts/</code>, <code>airflow/</code> e <code>evidencias/</code>. O repositório não tem tokens, senhas nem dados pessoais reais: o <code>.env</code>, o <code>chegada/</code> e o GTFS ficam fora do Git.</p>
+<figure>
+  <img src="../evidencias/09_repositorio.jpg" alt="Repositório público no GitHub">
+  <figcaption>Figura 7. Repositório público <code>patio-monitor-bigdata</code>, com as pastas e o README.</figcaption>
+</figure>
+</div>
+
+<!-- ===================== 06 ===================== -->
+<h2 class="quebra">06. Airflow: visão Graph e Grid</h2>
+<figure>
+  <img src="../evidencias/03_airflow_graph.jpg" alt="Airflow: visão Graph de uma execução">
+  <figcaption>Figura 8. Visão Graph da execução de 15/11 às 16h37: <code>coletar_olho_vivo</code>, <code>coletar_gtfs</code> e <code>coletar_clima</code> rodam em paralelo e só depois roda o <code>conferir_chegada</code>. O clima aparece como skipped porque já tinha sido coletado naquele dia.</figcaption>
+</figure>
+<p>A visão Grid está na Figura 2 (requisito 02). As colunas mostram as execuções horárias concluídas, com <code>coletar_olho_vivo</code> e <code>conferir_chegada</code> em verde em todas. As caixas rosa (skipped) de GTFS e clima são esperadas: as duas fontes são diárias, então a tarefa só baixa uma vez por dia e pula nas outras horas.</p>
+
+<!-- ===================== 07 ===================== -->
+<h2>07. Contagens da Bronze</h2>
+<p>O <code>01_bronze</code> foi rodado três vezes: depois do 1º lote, depois do 2º lote e de novo sem arquivo novo.</p>
+<table>
+  <tr><th>Tabela</th><th class="num">1ª execução (lote 1)</th><th class="num">2ª execução (lote 2)</th><th class="num">3ª execução (sem arquivo novo)</th></tr>
+  <tr><td>bronze_posicoes</td><td class="num">0 → 350</td><td class="num">350 → 1.310 (+960)</td><td class="num">1.310 → 1.310 (0)</td></tr>
+  <tr><td>bronze_portaria</td><td class="num">0 → 35</td><td class="num">35 → 192 (+157)</td><td class="num">192 → 192 (0)</td></tr>
+  <tr><td>bronze_escala</td><td class="num">0 → 35</td><td class="num">35 → 192 (+157)</td><td class="num">192 → 192 (0)</td></tr>
+  <tr><td>bronze_gtfs_trips</td><td class="num">0 → 0</td><td class="num">0 → 2.268 (+2.268)</td><td class="num">2.268 → 2.268 (0)</td></tr>
+  <tr><td>bronze_gtfs_stop_times</td><td class="num">0 → 0</td><td class="num">0 → 99.056 (+99.056)</td><td class="num">99.056 → 99.056 (0)</td></tr>
+  <tr><td>bronze_clima</td><td class="num">0 → 1</td><td class="num">1 → 3 (+2)</td><td class="num">3 → 3 (0)</td></tr>
+</table>
+<p>No 2º lote, só os 30 arquivos novos entraram: os 5 arquivos de posição do dia 13 não foram relidos. Na 3ª execução, sem arquivo novo, nenhuma tabela mudou, o que prova que rodar de novo não duplica. A portaria e a escala do 2º lote foram regeradas com todos os dias, então as 35 estadias do dia 13 reaparecem no arquivo novo com o mesmo <code>registro_id</code>. A Bronze guarda o arquivo como chegou, e a Prata fica com uma linha por <code>registro_id</code> (requisito 06).</p>
+<figure>
+  <img src="../evidencias/04_bronze_lote1_20261113.jpg" alt="Contagens da Bronze após o 1º lote">
+  <figcaption>Figura 9. 1ª execução (lote 1, 13/11): 350 posições em 5 arquivos de coleta, 35 registros de portaria, 35 de escala e 1 de clima.</figcaption>
+</figure>
+<figure>
+  <img src="../evidencias/05_bronze_lote2_20261115.jpg" alt="Contagens da Bronze após o 2º lote">
+  <figcaption>Figura 10. 2ª execução (lote 2, 15/11): só os arquivos novos entram. O GTFS entra pela primeira vez.</figcaption>
+</figure>
+<figure>
+  <img src="../evidencias/05_bronze_3a_execucao_sem_arquivo_novo.jpg" alt="Contagens da Bronze na 3ª execução">
+  <figcaption>Figura 11. 3ª execução, sem arquivo novo: a coluna "novas" fica toda em 0 e nada duplica.</figcaption>
+</figure>
+
+<!-- ===================== 08 ===================== -->
+<h2 class="quebra">08. As cinco consultas SQL</h2>
+<p>As consultas estão em <code>databricks/04_consultas.sql</code> e rodam sobre <code>workspace.patio.fato_permanencia</code>.</p>
+
+<div class="req">
+<h3>Consulta 1 · Tempo médio de permanência por linha</h3>
+<pre>SELECT linha, count(*) AS estadias, round(avg(minutos_parado), 1) AS media_min,
+       round(percentile_approx(minutos_parado, 0.9), 1) AS p90_min
+FROM fato_permanencia WHERE entrada IS NOT NULL
+GROUP BY linha ORDER BY media_min DESC;</pre>
+<figure><img src="../evidencias/08_consulta1_permanencia_linha.jpg" alt="Resultado da consulta 1"><figcaption>Figura 12. Consulta 1: permanência média e p90 por linha.</figcaption></figure>
+<p><b>Interpretação:</b> o topo da lista não mostra ônibus que ficam muito tempo no pátio, e sim estadias sem saída registrada. Nelas, <code>minutos_parado</code> conta até agora: a linha 1021-10 tem 1 estadia aberta desde 14/11, com 1.510 min. Nas linhas com estadias fechadas, a permanência típica fica entre 30 e 60 minutos (por exemplo, 8600-10 com 24 estadias e média de 37,8 min, e 917H-10 com 12 estadias e 38,3 min). A 8400-10, linha com mais movimento (41 estadias), tem média de 172,8 min puxada por estadias abertas, mas p90 de 118 min. Ou seja, para medir a permanência operacional é preciso resolver antes as saídas sem confirmação, o que as consultas 2 e 3 apontam.</p>
+</div>
+
+<div class="req">
+<h3>Consulta 2 · Viagens sem saída confirmada por dia</h3>
+<pre>SELECT data, count_if(status_conciliacao = 'saida_sem_confirmacao') AS sem_confirmacao, count(*) AS viagens,
+       round(100 * count_if(status_conciliacao = 'saida_sem_confirmacao') / count(*), 1) AS pct
+FROM fato_permanencia GROUP BY data ORDER BY data;</pre>
+<figure><img src="../evidencias/08_consulta2_sem_saida_dia.jpg" alt="Resultado da consulta 2"><figcaption>Figura 13. Consulta 2: viagens sem saída confirmada por dia.</figcaption></figure>
+<p><b>Interpretação:</b> em 14/11, o único dia com coleta completa, foram 12 de 139 viagens (8,6%) sem saída confirmada, perto dos 8% que a regra de simulação injeta. Isso mostra que a conciliação recupera o que foi plantado. Os dias 13/11 (5 viagens, só a noite) e 15/11 (13 viagens, coleta parcial da tarde) ficaram em 0, mas com uma amostra pequena demais para concluir algo.</p>
+</div>
+
+<div class="req">
+<h3>Consulta 3 · Veículos parados há mais de X minutos</h3>
+<pre>SELECT prefixo_veiculo, linha, vaga_registrada, entrada, minutos_parado
+FROM fato_permanencia
+WHERE saida IS NULL AND entrada IS NOT NULL AND minutos_parado &gt; :x_minutos   -- X = 45
+ORDER BY minutos_parado DESC;</pre>
+<figure><img src="../evidencias/08_consulta3_parados.jpg" alt="Resultado da consulta 3"><figcaption>Figura 14. Consulta 3: veículos parados há mais de 45 minutos sem saída registrada.</figcaption></figure>
+<p><b>Interpretação:</b> 11 veículos estão sem saída há mais de 45 minutos. O primeiro da lista é o 16175 (linha 9023-10, vaga V9), com entrada em 13/11 às 23h28 e mais de 2.700 minutos sem baixa. Os 11 são estadias com saída sem confirmação que ainda têm entrada registrada. Na prática, é a lista de trabalho do controlador: ou o ônibus está mesmo parado e pode ser liberado para uma viagem, ou saiu sem baixa na portaria e o registro precisa ser corrigido.</p>
+</div>
+
+<div class="req">
+<h3>Consulta 4 · Divergências entre escala e portaria, por tipo</h3>
+<pre>SELECT status_conciliacao AS tipo, count(*) AS ocorrencias,
+       round(100 * count(*) / sum(count(*)) OVER (), 1) AS pct_do_total
+FROM fato_permanencia WHERE status_conciliacao &lt;&gt; 'ok'
+GROUP BY status_conciliacao ORDER BY ocorrencias DESC;</pre>
+<figure><img src="../evidencias/08_consulta4_divergencias.jpg" alt="Resultado da consulta 4"><figcaption>Figura 15. Consulta 4: divergências entre escala e portaria, por tipo.</figcaption></figure>
+<p><b>Interpretação:</b> 76 das 157 viagens (48%) têm alguma divergência. A mais comum é o atraso, com 32 casos (42,1% das divergências), seguida de veículo trocado (25; 32,9%), saída sem confirmação (12; 15,8%) e vaga errada (7; 9,2%). O atraso é onde os alertas do MVP mais ajudam. O veículo trocado aparece bem acima dos 5% que o gerador injeta, porque a conciliação liga escala e portaria pela linha e por uma janela de horário: quando dois ônibus da mesma linha saem perto um do outro, o pareamento pode escolher o outro prefixo. Uma melhoria é incluir o prefixo previsto no critério de junção antes de declarar a troca.</p>
+</div>
+
+<div class="req">
+<h3>Consulta 5 · Impacto: partidas no horário antes e depois dos alertas <span class="tag">impacto</span></h3>
+<pre>SELECT CASE WHEN data &lt; :inicio_alertas THEN '1_antes' ELSE '2_depois' END AS periodo,   -- 2026-11-15
+       count(*) AS partidas,
+       round(100 * count_if(status_conciliacao = 'ok') / count(*), 1) AS pct_no_horario
+FROM fato_permanencia GROUP BY 1 ORDER BY 1;</pre>
+<figure><img src="../evidencias/08_consulta5_impacto.jpg" alt="Resultado da consulta 5"><figcaption>Figura 16. Consulta 5: porcentagem de partidas no horário antes e depois de 15/11, a data em que os alertas foram ligados.</figcaption></figure>
+<p><b>Interpretação:</b> antes dos alertas (13 e 14/11), 50,7% de 144 partidas saíram no horário. Depois (15/11), foram 61,5% de 13 partidas, uma diferença de 10,8 pontos percentuais. A direção é a esperada, mas o período "depois" tem só 13 partidas, e a portaria e a escala são simuladas. Então o resultado mostra <i>como</i> o indicador de impacto da ficha técnica é medido, e não prova que os alertas causaram a melhora. Para isso seriam necessárias algumas semanas de operação real antes e depois.</p>
+</div>
+
+<!-- ===================== 09 ===================== -->
+<h2>09. Conclusão técnica</h2>
+<p>O pipeline coleta dados reais do problema de hora em hora, sem token no código, com tarefas em paralelo, verificação de chegada e notificação de falha. No Databricks, a Bronze é incremental e idempotente (o <code>COPY INTO</code> não recarrega arquivo já lido), a Prata aplica tipos, três regras de qualidade com contagem e <code>MERGE</code> pela chave, e a Ouro entrega um modelo estrela com o dado pessoal protegido por SHA-256.</p>
+<p>O resultado chega ao cidadão pela <code>fato_permanencia</code>, que o MVP publica no Azure e mostra ao controlador na seção "Permanência no pátio". Com ela, o controlador sabe quais ônibus estão no pátio, há quanto tempo e quais viagens ainda não saíram, o que reduz o tempo para localizar um veículo e ajuda a aumentar a porcentagem de partidas no horário (ODS 11.2).</p>
+<p><b>Limitações e próximos passos:</b> a portaria e a escala são simuladas porque não temos acesso a uma garagem real. Numa operação de verdade, elas viriam do sistema da garagem e da cancela (Smart Bus Gate), e a subida ao Volume seria automática, com Auto Loader e um Databricks conectado ao Airflow.</p>
+<div class="caixa">
+  <b>Repositório:</b> <a href="https://github.com/FeBressane/patio-monitor-bigdata">https://github.com/FeBressane/patio-monitor-bigdata</a><br>
+  <b>MVP:</b> <a href="https://patio-monitor-gs-97688.azurewebsites.net">https://patio-monitor-gs-97688.azurewebsites.net</a> · tabela da Ouro em <a href="https://patio-monitor-gs-97688.azurewebsites.net/api/permanencia">/api/permanencia</a><br>
+  <b>Repositório do MVP e do deploy:</b> <a href="https://github.com/FeBressane/patio-monitor-devops">https://github.com/FeBressane/patio-monitor-devops</a>
+</div>
+
+</body>
+</html>
