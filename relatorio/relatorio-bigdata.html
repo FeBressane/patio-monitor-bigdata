@@ -231,14 +231,18 @@ s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_t
 <div class="req">
 <h3>Requisito 08 · LGPD e uso pelo MVP <span class="tag">1,0</span></h3>
 <p>Os únicos dados pessoais do domínio são a matrícula e o nome do motorista, que já são fictícios. Mesmo assim, eles chegam à Ouro só como hash: <code>sha2(matricula_motorista, 256)</code> e <code>sha2(nome_motorista, 256)</code>. O texto original não sai da Prata.</p>
-<p>O MVP usa a tabela <b><code>fato_permanencia</code></b>, exportada <b>sem nenhuma coluna de motorista</b> para <code>data/ouro/fato_permanencia.csv</code> no repositório do MVP. A API a serve em <a href="https://patio-monitor-gs-97688.azurewebsites.net/api/permanencia"><code>GET /api/permanencia</code></a>, e a tela do MVP mostra a seção <b>"Permanência no pátio (camada Ouro)"</b>.</p>
+<p>O MVP usa a tabela <b><code>fato_permanencia</code></b>, exportada <b>sem nenhuma coluna de motorista</b> para <code>data/ouro/fato_permanencia.csv</code> no repositório do MVP. A API a serve em <a href="https://patio-monitor-gs-97688.azurewebsites.net/api/permanencia"><code>GET /api/permanencia</code></a>, e a tela do MVP usa os dados da Ouro de duas formas: nos indicadores do topo ("Partidas no horário" e "Permanência mediana") e na seção <b>"Indicadores da operação"</b>, com 4 gráficos e a tabela "Permanência no pátio". O mapa do MVP mostra as posições reais da última coleta do pipeline (Olho Vivo), servidas em <code>GET /api/onibus-mapa</code>.</p>
 <figure>
-  <img src="../evidencias/08_mvp_permanencia_ouro.png" alt="Tela do MVP com a camada Ouro">
-  <figcaption>Figura 6. MVP publicado no Azure (15/11): a seção "Permanência no pátio · camada Ouro · fato_permanencia" mostra as 20 viagens mais recentes do export (<code>fonte: fato_permanencia.csv</code>), com o status de conciliação e nenhuma coluna de motorista.</figcaption>
+  <img src="../evidencias/08_mvp_topo_mapa.png" alt="Topo do MVP com indicadores e mapa">
+  <figcaption>Figura 6. MVP publicado no Azure: indicadores no topo (os dois da direita vêm da camada Ouro), o mapa com os 41 ônibus da última coleta num raio de 1,5 km do Terminal Pirituba (12 dentro do pátio) e as pendências da conciliação.</figcaption>
+</figure>
+<figure>
+  <img src="../evidencias/08_mvp_permanencia_ouro.png" alt="Gráficos e tabela da camada Ouro no MVP">
+  <figcaption>Figura 7. Seção "Indicadores da operação" do MVP, montada a partir da <code>fato_permanencia</code> (157 viagens): divergências por tipo, % de partidas no horário por dia, permanência mediana por linha, entradas por hora e a tabela das viagens mais recentes, sem nenhuma coluna de motorista.</figcaption>
 </figure>
 <figure>
   <img src="../evidencias/07_ouro_catalogo_lgpd.jpg" alt="Colunas de motorista na fato_permanencia">
-  <figcaption>Figura 7. Catalog: à esquerda, a fato e as dimensões (<code>dim_linha</code>, <code>dim_local</code>, <code>dim_tempo</code>, <code>dim_veiculo</code>). Ao filtrar por "motorista", a <code>fato_permanencia</code> só tem as duas colunas em hash, sem nome nem matrícula em texto.</figcaption>
+  <figcaption>Figura 8. Catalog: à esquerda, a fato e as dimensões (<code>dim_linha</code>, <code>dim_local</code>, <code>dim_tempo</code>, <code>dim_veiculo</code>). Ao filtrar por "motorista", a <code>fato_permanencia</code> só tem as duas colunas em hash, sem nome nem matrícula em texto.</figcaption>
 </figure>
 </div>
 
@@ -247,7 +251,7 @@ s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_t
 <p>O <a href="https://github.com/FeBressane/patio-monitor-bigdata#readme">README</a> traz os integrantes, a ficha técnica, o diagrama, as fontes, a tabela de requisitos e o passo a passo para reproduzir. As pastas são <code>dags/</code>, <code>databricks/</code>, <code>amostras/</code>, <code>scripts/</code>, <code>airflow/</code> e <code>evidencias/</code>. O repositório não tem tokens, senhas nem dados pessoais reais: o <code>.env</code>, o <code>chegada/</code> e o GTFS ficam fora do Git.</p>
 <figure>
   <img src="../evidencias/09_repositorio.jpg" alt="Repositório público no GitHub">
-  <figcaption>Figura 8. Repositório público <code>patio-monitor-bigdata</code>, com as pastas e o README.</figcaption>
+  <figcaption>Figura 9. Repositório público <code>patio-monitor-bigdata</code>, com as pastas e o README.</figcaption>
 </figure>
 </div>
 
@@ -255,7 +259,7 @@ s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_t
 <h2 class="quebra">06. Airflow: visão Graph e Grid</h2>
 <figure>
   <img src="../evidencias/03_airflow_graph.jpg" alt="Airflow: visão Graph de uma execução">
-  <figcaption>Figura 9. Visão Graph da execução de 15/11 às 16h37: <code>coletar_olho_vivo</code>, <code>coletar_gtfs</code> e <code>coletar_clima</code> rodam em paralelo e só depois roda o <code>conferir_chegada</code>. O clima aparece como skipped porque já tinha sido coletado naquele dia.</figcaption>
+  <figcaption>Figura 10. Visão Graph da execução de 15/11 às 16h37: <code>coletar_olho_vivo</code>, <code>coletar_gtfs</code> e <code>coletar_clima</code> rodam em paralelo e só depois roda o <code>conferir_chegada</code>. O clima aparece como skipped porque já tinha sido coletado naquele dia.</figcaption>
 </figure>
 <p>A visão Grid está na Figura 2 (requisito 02). As colunas mostram as execuções horárias concluídas, com <code>coletar_olho_vivo</code> e <code>conferir_chegada</code> em verde em todas. As caixas rosa (skipped) de GTFS e clima são esperadas: as duas fontes são diárias, então a tarefa só baixa uma vez por dia e pula nas outras horas.</p>
 
@@ -274,15 +278,15 @@ s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_t
 <p>No 2º lote, só os 30 arquivos novos entraram: os 5 arquivos de posição do dia 13 não foram relidos. Na 3ª execução, sem arquivo novo, nenhuma tabela mudou, o que prova que rodar de novo não duplica. A portaria e a escala do 2º lote foram regeradas com todos os dias, então as 35 estadias do dia 13 reaparecem no arquivo novo com o mesmo <code>registro_id</code>. A Bronze guarda o arquivo como chegou, e a Prata fica com uma linha por <code>registro_id</code> (requisito 06).</p>
 <figure>
   <img src="../evidencias/04_bronze_lote1_20261113.jpg" alt="Contagens da Bronze após o 1º lote">
-  <figcaption>Figura 10. 1ª execução (lote 1, 13/11): 350 posições em 5 arquivos de coleta, 35 registros de portaria, 35 de escala e 1 de clima.</figcaption>
+  <figcaption>Figura 11. 1ª execução (lote 1, 13/11): 350 posições em 5 arquivos de coleta, 35 registros de portaria, 35 de escala e 1 de clima.</figcaption>
 </figure>
 <figure>
   <img src="../evidencias/05_bronze_lote2_20261115.jpg" alt="Contagens da Bronze após o 2º lote">
-  <figcaption>Figura 11. 2ª execução (lote 2, 15/11): só os arquivos novos entram. O GTFS entra pela primeira vez.</figcaption>
+  <figcaption>Figura 12. 2ª execução (lote 2, 15/11): só os arquivos novos entram. O GTFS entra pela primeira vez.</figcaption>
 </figure>
 <figure>
   <img src="../evidencias/05_bronze_3a_execucao_sem_arquivo_novo.jpg" alt="Contagens da Bronze na 3ª execução">
-  <figcaption>Figura 12. 3ª execução, sem arquivo novo: a coluna "novas" fica toda em 0 e nada duplica.</figcaption>
+  <figcaption>Figura 13. 3ª execução, sem arquivo novo: a coluna "novas" fica toda em 0 e nada duplica.</figcaption>
 </figure>
 
 <!-- ===================== 08 ===================== -->
@@ -295,7 +299,7 @@ s.post(f"{OLHO_VIVO}/Login/Autenticar", params={"token": Variable.get("sptrans_t
        round(percentile_approx(minutos_parado, 0.9), 1) AS p90_min
 FROM fato_permanencia WHERE entrada IS NOT NULL
 GROUP BY linha ORDER BY media_min DESC;</pre>
-<figure><img src="../evidencias/08_consulta1_permanencia_linha.jpg" alt="Resultado da consulta 1"><figcaption>Figura 13. Consulta 1: permanência média e p90 por linha.</figcaption></figure>
+<figure><img src="../evidencias/08_consulta1_permanencia_linha.jpg" alt="Resultado da consulta 1"><figcaption>Figura 14. Consulta 1: permanência média e p90 por linha.</figcaption></figure>
 <p><b>Interpretação:</b> o topo da lista não mostra ônibus que ficam muito tempo no pátio, e sim estadias sem saída registrada. Nelas, <code>minutos_parado</code> conta até agora: a linha 1021-10 tem 1 estadia aberta desde 14/11, com 1.510 min. Nas linhas com estadias fechadas, a permanência típica fica entre 30 e 60 minutos (por exemplo, 8600-10 com 24 estadias e média de 37,8 min, e 917H-10 com 12 estadias e 38,3 min). A 8400-10, linha com mais movimento (41 estadias), tem média de 172,8 min puxada por estadias abertas, mas p90 de 118 min. Ou seja, para medir a permanência operacional é preciso resolver antes as saídas sem confirmação, o que as consultas 2 e 3 apontam.</p>
 </div>
 
@@ -304,7 +308,7 @@ GROUP BY linha ORDER BY media_min DESC;</pre>
 <pre>SELECT data, count_if(status_conciliacao = 'saida_sem_confirmacao') AS sem_confirmacao, count(*) AS viagens,
        round(100 * count_if(status_conciliacao = 'saida_sem_confirmacao') / count(*), 1) AS pct
 FROM fato_permanencia GROUP BY data ORDER BY data;</pre>
-<figure><img src="../evidencias/08_consulta2_sem_saida_dia.jpg" alt="Resultado da consulta 2"><figcaption>Figura 14. Consulta 2: viagens sem saída confirmada por dia.</figcaption></figure>
+<figure><img src="../evidencias/08_consulta2_sem_saida_dia.jpg" alt="Resultado da consulta 2"><figcaption>Figura 15. Consulta 2: viagens sem saída confirmada por dia.</figcaption></figure>
 <p><b>Interpretação:</b> em 14/11, o único dia com coleta completa, foram 12 de 139 viagens (8,6%) sem saída confirmada, perto dos 8% que a regra de simulação injeta. Isso mostra que a conciliação recupera o que foi plantado. Os dias 13/11 (5 viagens, só a noite) e 15/11 (13 viagens, coleta parcial da tarde) ficaram em 0, mas com uma amostra pequena demais para concluir algo.</p>
 </div>
 
@@ -314,7 +318,7 @@ FROM fato_permanencia GROUP BY data ORDER BY data;</pre>
 FROM fato_permanencia
 WHERE saida IS NULL AND entrada IS NOT NULL AND minutos_parado &gt; :x_minutos   -- X = 45
 ORDER BY minutos_parado DESC;</pre>
-<figure><img src="../evidencias/08_consulta3_parados.jpg" alt="Resultado da consulta 3"><figcaption>Figura 15. Consulta 3: veículos parados há mais de 45 minutos sem saída registrada.</figcaption></figure>
+<figure><img src="../evidencias/08_consulta3_parados.jpg" alt="Resultado da consulta 3"><figcaption>Figura 16. Consulta 3: veículos parados há mais de 45 minutos sem saída registrada.</figcaption></figure>
 <p><b>Interpretação:</b> 11 veículos estão sem saída há mais de 45 minutos. O primeiro da lista é o 16175 (linha 9023-10, vaga V9), com entrada em 13/11 às 23h28 e mais de 2.700 minutos sem baixa. Os 11 são estadias com saída sem confirmação que ainda têm entrada registrada. Na prática, é a lista de trabalho do controlador: ou o ônibus está mesmo parado e pode ser liberado para uma viagem, ou saiu sem baixa na portaria e o registro precisa ser corrigido.</p>
 </div>
 
@@ -324,7 +328,7 @@ ORDER BY minutos_parado DESC;</pre>
        round(100 * count(*) / sum(count(*)) OVER (), 1) AS pct_do_total
 FROM fato_permanencia WHERE status_conciliacao &lt;&gt; 'ok'
 GROUP BY status_conciliacao ORDER BY ocorrencias DESC;</pre>
-<figure><img src="../evidencias/08_consulta4_divergencias.jpg" alt="Resultado da consulta 4"><figcaption>Figura 16. Consulta 4: divergências entre escala e portaria, por tipo.</figcaption></figure>
+<figure><img src="../evidencias/08_consulta4_divergencias.jpg" alt="Resultado da consulta 4"><figcaption>Figura 17. Consulta 4: divergências entre escala e portaria, por tipo.</figcaption></figure>
 <p><b>Interpretação:</b> 76 das 157 viagens (48%) têm alguma divergência. A mais comum é o atraso, com 32 casos (42,1% das divergências), seguida de veículo trocado (25; 32,9%), saída sem confirmação (12; 15,8%) e vaga errada (7; 9,2%). O atraso é onde os alertas do MVP mais ajudam. O veículo trocado aparece bem acima dos 5% que o gerador injeta, porque a conciliação liga escala e portaria pela linha e por uma janela de horário: quando dois ônibus da mesma linha saem perto um do outro, o pareamento pode escolher o outro prefixo. Uma melhoria é incluir o prefixo previsto no critério de junção antes de declarar a troca.</p>
 </div>
 
@@ -334,7 +338,7 @@ GROUP BY status_conciliacao ORDER BY ocorrencias DESC;</pre>
        count(*) AS partidas,
        round(100 * count_if(status_conciliacao = 'ok') / count(*), 1) AS pct_no_horario
 FROM fato_permanencia GROUP BY 1 ORDER BY 1;</pre>
-<figure><img src="../evidencias/08_consulta5_impacto.jpg" alt="Resultado da consulta 5"><figcaption>Figura 17. Consulta 5: porcentagem de partidas no horário antes e depois de 15/11, a data em que os alertas foram ligados.</figcaption></figure>
+<figure><img src="../evidencias/08_consulta5_impacto.jpg" alt="Resultado da consulta 5"><figcaption>Figura 18. Consulta 5: porcentagem de partidas no horário antes e depois de 15/11, a data em que os alertas foram ligados.</figcaption></figure>
 <p><b>Interpretação:</b> antes dos alertas (13 e 14/11), 50,7% de 144 partidas saíram no horário. Depois (15/11), foram 61,5% de 13 partidas, uma diferença de 10,8 pontos percentuais. A direção é a esperada, mas o período "depois" tem só 13 partidas, e a portaria e a escala são simuladas. Então o resultado mostra <i>como</i> o indicador de impacto da ficha técnica é medido, e não prova que os alertas causaram a melhora. Para isso seriam necessárias algumas semanas de operação real antes e depois.</p>
 </div>
 
